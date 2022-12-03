@@ -66,5 +66,30 @@ mtcars[mtcars$cyl<6,]
 
 orangeec[orangeec$GDP.PC>=15000,]
 
-summary(orangeec)
+neworangeec <- subset( orangeec, Internet.penetration...population >80
+                       & Education.invest...GDP >= 4.5, 
+                       select=Creat.Ind...GDP)
+
+neworangeec
+ 
+
+rename(orangeec,c("Creat.Ind...GDP" = "AporteEcNja"))
+
+
+
+nivelcurso <- c("basico","intermedio","avanzado")
+nivelcurso
+
+head(mtcars)
+tail(mtcars)
+
+my_vector <- 1:8
+my_matrix <- matrix (1:9, ncol=3)
+my_df <- mtcars [1:4,]
+my_list <- list(my_vector, my_matrix, my_df)
+
+my_vector
+my_matrix
+my_df
+my_list
 
