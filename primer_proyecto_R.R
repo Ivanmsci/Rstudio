@@ -56,3 +56,15 @@ final_matrix <- rbind(tiempo_matrix,c(10,15,30,5,0))
 final_matrix
 
 colSums(final_matrix) 
+
+final_matrix [2,3]
+final_matrix
+
+#uso de operadores para comparar y ubicar datos 
+
+mtcars[mtcars$cyl<6,]
+
+orangeec[orangeec$GDP.PC>=15000,]
+
+summary(orangeec)
+
