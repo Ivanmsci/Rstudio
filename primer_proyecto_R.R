@@ -199,6 +199,8 @@ ggplot(mtcars, aes(x=am, y=mpg, fill = am)) +
 # 
 
 economy <- mean(orangeec$GDP.PC)
+
+economy
        
 orangeec <- orangeec %>% 
   mutate (Strong_economy = ifelse (GDP.PC < economy, 
@@ -225,5 +227,201 @@ ggplot (orangeec, aes(x=Strong_economy, y = Internet.penetration...population,
   theme(panel.background = element_blank(), 
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
+
+# scatter plot ggplot dos variables
+
+
+ggplot (mtcars, aes(wt,hp)) + 
+  geom_point () +
+  labs (x= "peso", "caballos de fuerza",
+        tittle = "relación de peso con caballos de fuerza")
+
+ggplot (mtcars, aes(hp,mpg)) + 
+  geom_point () +
+  labs (x= "caballos de fuerza", "millas por galon",
+        tittle = "millas por galon y hp")
+
+
+
+#
+
+
+
+ggplot(mtcars, aes (hp, qsec)) + 
+  geom_point(aes(color = am, size = cyl))+
+  labs (x="caballos de fuerza", y="tiempo en 1/4 de milla",
+        tittle = "caballos-velocidad según cilindraje y tipo de caja")
+
+# scatter plot ggplot dos variables orangeec
+
+ggplot(orangeec, aes (Internet.penetration...population, Creat.Ind...GDP)) + 
+  geom_point(aes(color = factor(Strong_economy), size = GDP.Growth..))+
+  labs (x="penetración de internet", y="Aporte economia naranja PIB",
+        tittle = "Internet y aporte economía naranja según economia y crecimiento del PIB")
+
+
+
+#
+library(plotly)
+my_graph <- ggplot(orangeec, aes(orangeec$Internet.penetration...population,
+                                 orangeec$Creat.Ind...GDP, label = row.names(orangeec))) +
+  geom_point () + labs (x = " penetración de internet", y = "aporte a economia naranja",
+               title = "penetracion de internet y aporte a economia naranja")
+
+p = ggplotly (my_graph)
+
+p
+
+
+#
+
+pairs(mtcars[, 2:6])
+
+# 
+
+newdata <- subset(mtcars, select = c ( 2, 7:8, 11, 12))
+pairs (newdata)
+
+#
+
+Eficientes <- filter(mtcars, mpg >= 30)
+Eficientes 
+
+pairs (Eficientes[, 2:6])
+
+
+#
+
+merc <- mtcars %>%
+  filter(str_detect(model, "Merc"))
+merc
+
+
+pairs (merc[, 2:6])
+
+
+cor(mtcars[, 2:6])
+
+
+cor(newdata)
+
+#correlaciones orangeec
+
+pairs(orangeec[, 2:6])
+
+#
+
+newdata <- subset(orangeec, select = c(5,6,10,11,12,13))
+newdata
+pairs (newdata)
+
+cor(newdata)
+
+cor(orangeec[,2:6], use = "complete.obs")
+
+cor(newdata, use = "complete.obs")
+
+summary(mtcars)
+
+stdev <- sd(mtcars$mpg)
+prom <- mean(mtcars$mpg)
+#
+CV <- ((stdev)/(prom))*100
+CV
+stdev
+#el resultado es mayor que 25% por lo que no es viable hacer 
+#suposiciones basadas en el promedio
+
+stdev2 <- sd(orangeec$Creat.Ind...GDP, na.rm = TRUE)
+prom2 <- mean(orangeec$Creat.Ind...GDP, na.rm = TRUE)
+
+CV2 <- ((stdev2)/(prom2))*100
+CV2
+
+
+prom2
+stdev2
+
+
+# clase 30
+
+eficientes <- mean(mtcars$mpg)
+eficientes
+mtcars <- mtcars %>%
+  mutate(mas_eficientes = ifelse(mpg < eficientes, "por debajo del pormedio",
+                                 "superior al promedio"))
+mas_veloces <- mtcars[mtcars$qsec<16,]  
+mas_veloces
+
+mtcars <- mtcars %>%
+  mutate(velocidad_cuarto_milla = ifelse(qsec < 16, "menor a 16 segundos",
+                                         "mayor a 16 segundos"))
+mtcars <- mtcars %>% 
+  mutate (peso_kilos = (wt/2.22)*1000)
+
+mtcars <- mtcars %>% 
+  mutate (peso = ifelse(peso_kilos <= 1500, "livianos", 
+                        "pesados"))
+  
+#clase 31
+
+orangeec <- orangeec %>% 
+  mutate (cresimiento_GDP = ifelse(orangeec$GDP.Growth.. >= 2.5, "2.5% o mas", 
+                        "menos del 2.5%"))
+
+
+orangeec <- orangeec %>% 
+  mutate (anarajados = ifelse(orangeec$Creat.Ind...GDP >= 2.5, "mas anaranjados", 
+                                   "menos anaranjados"))
+#ranking
+orangeec %>% 
+  arrange(desc(orangeec$Creat.Ind...GDP))
+
+topnaranjas <- orangeec %>% 
+  filter (Country %in% c("Mexico", "Panama", "Colombia", "Brazil"))
+
+topnaranjas
+
+
+#clase 32
+
+mtcars %>%
+  arrange(desc (peso_kilos))
+
+mas_pesados <- mtcars %>% 
+  filter(model %in% c ( "Lincoln Continental", "Chrisler Imperial", 
+                        "Cadillac Fleetwood", "Merc 450SE" ))
+mas_pesados
+
+ggplot(mas_pesados, aes(x=hp, y=mpg)) + 
+  geom_point() + 
+  facet_wrap(~model)
+
+ggplot(mas_pesados, aes(x=cyl, y=mpg, size = peso)) + 
+  geom_point() + 
+  facet_wrap(~am)
+
+#clase 33
+
+ggplot(topnaranjas, aes(x=Internet.penetration...population,
+                        y=Services...GDP, size = GDP.PC)) +
+  geom_point() +
+  facet_wrap (~Country)
+
+#
+
+ggplot(topnaranjas, aes(x=Education.invest...GDP,
+                        y=Creat.Ind...GDP, size = Unemployment)) +
+  geom_point() +
+  facet_wrap (~Country)
+
+myColors <- brewer.pal(7,"Greens")
+
+
+ggplot(topnaranjas, aes(x=Internet.penetration...population,
+                        y=GDP.PC, fill = Creat.Ind...GDP)) +
+  geom_tile() +
+  facet_wrap (~Country)+
+  scale_fill_gradientn(colors=myColors)
 
 
